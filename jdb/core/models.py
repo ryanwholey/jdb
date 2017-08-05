@@ -67,7 +67,7 @@ class Question(models.Model):
         max_length=255,
     )
     air_date = models.DateField()
-    round = models.CharField(max_length=10)
+    round = models.CharField(max_length=100)
     show_number = models.CharField(max_length=6)
 
     class Meta:

@@ -1,2 +1,4 @@
 **/*.pyc
 venv
+jdb/logs
+jdb/core/data/jeopardy_questions.json
