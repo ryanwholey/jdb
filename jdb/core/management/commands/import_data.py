@@ -1,17 +1,19 @@
+import contextlib
+import ijson
 import os
 import sys
-import ijson
 from html import unescape
 
-import contextlib
-
 from django.core.management.base import BaseCommand, CommandError
+
 from core.models import Question
+
 
 SAMPLE_PATH = 'core/data/sample.json'
 DATA_PATH = 'core/data/jeopardy_questions.json'
 DEFAULT_QUESTION_VALUE = '$1000'
 ERROR_LOG_FILE = 'logs/import_data.error'
+
 
 class Command(BaseCommand):
     help = 'Load questions into db from json file'
@@ -33,19 +35,19 @@ class Command(BaseCommand):
         return open(ERROR_LOG_FILE, 'w+')
 
     def handle(self, *args, **kwargs):
-        print(self.style.SUCCESS('Starting load task:'))
+        """Entry point for load data command"""
+
+        self.stdout.write(self.style.SUCCESS('Starting load task:'))
 
         data_path = DATA_PATH
-
         if kwargs['sample']:
             data_path = SAMPLE_PATH
 
+        log = self.get_error_log()
+        was_error = False
+
         f = open(data_path)
         objects = ijson.items(f, 'item')
-
-        log = self.get_error_log()
-
-        was_error = False
 
         for o in objects:
             try:
